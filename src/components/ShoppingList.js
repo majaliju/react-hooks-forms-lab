@@ -10,6 +10,14 @@ function ShoppingList({ items }) {
     setSelectedCategory(event.target.value);
   }
 
+  // create a search state to be passed into Filter
+  const [search, setSearch] = useState(" ") // whats the default state?
+
+  function handleSearchChange(event){
+    setSearch(event.target.value)
+    console.log("search: ", search)
+  }
+
   const itemsToDisplay = items.filter((item) => {
     if (selectedCategory === "All") return true;
 
@@ -19,7 +27,7 @@ function ShoppingList({ items }) {
   return (
     <div className="ShoppingList">
       <ItemForm />
-      <Filter onCategoryChange={handleCategoryChange} />
+      <Filter onCategoryChange={handleCategoryChange} search={search} onSearchChange={handleSearchChange}/>
       <ul className="Items">
         {itemsToDisplay.map((item) => (
           <Item key={item.id} name={item.name} category={item.category} />
