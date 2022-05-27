@@ -14,7 +14,9 @@ function ShoppingList({ items }) {
 
   function handleSearchChange(event){
     setSearch(event.target.value)
+    // write a function here, that affects the display
   }
+  console.log(search)
 
     const matchingName = items.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
 
