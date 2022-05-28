@@ -5,7 +5,8 @@ import Item from "./Item";
 
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [search, setSearch] = useState(" ")  
+  const [search, setSearch] = useState("")  
+  const [select, setSelect] = useState("Produce")
 
 
   function handleCategoryChange(event) {
@@ -14,18 +15,76 @@ function ShoppingList({ items }) {
 
   function handleSearchChange(event){
     setSearch(event.target.value)
-    // write a function here, that affects the display
   }
-  console.log(search)
 
-    const matchingName = items.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
+  function handleAddItemChange(event){
+    setSelect(event.target.value)
+    console.log(select)
+  }
 
-    const itemsToDisplay = items.filter((item) => {
-    if (selectedCategory === "All") return true
-    return item.category === selectedCategory
-  })
 
+  const itemsToDisplay = items.filter((item) => {
+    if (selectedCategory === "All") { 
+      if ((item.name).toLowerCase().includes(search.toLowerCase())){
+        return true
+      }
+    };
+
+    return item.category === selectedCategory;
+  });
+ 
+
+  return (
+    <div className="ShoppingList">
+      <ItemForm select={select} onAddItemChange={handleAddItemChange}/>
+      <Filter onCategoryChange={handleCategoryChange} search={search} onSearchChange={handleSearchChange}/>
+      <ul className="Items">
+        {itemsToDisplay.map((item) => (
+          <Item key={item.id} name={item.name} category={item.category} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default ShoppingList;
+
+
+
+
+   
+  // // a friend's take on the problem
   // const itemsToDisplay = items.filter((item) => {
+  //   if (selectedCategory === "All") {
+  //     if (item.name.includes(search)) { 
+  //       return true;
+  //     } else { 
+  //       return false;
+  //     }
+  //   } else {
+  //     return (item.category === selectedCategory) && (item.name.includes(search));
+  //   }
+  // });
+
+
+
+
+
+
+
+
+// // the original
+//   const itemsToDisplay = items.filter((item) => {
+//     if (selectedCategory === "All") return true;
+
+//     return item.category === selectedCategory;
+//   });
+
+
+ // const matchingName = items.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
+
+
+ // const itemsToDisplay = items.filter((item) => {
   //   if (item.name.toLowerCase().includes(search.toLowerCase())) {
   //     return item.name
   //   }
@@ -75,18 +134,3 @@ function ShoppingList({ items }) {
 //     }
 //     // return item.category === selectedCategory; 
 //   });
-
-  return (
-    <div className="ShoppingList">
-      <ItemForm />
-      <Filter onCategoryChange={handleCategoryChange} search={search} onSearchChange={handleSearchChange}/>
-      <ul className="Items">
-        {itemsToDisplay.map((item) => (
-          <Item key={item.id} name={item.name} category={item.category} />
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export default ShoppingList;
